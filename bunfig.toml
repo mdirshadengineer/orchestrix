@@ -1,0 +1,9 @@
+telemetry=false
+
+[install]
+exact=true
+ignoreScripts=true
+
+[run]
+shell="bun"
+noOrphans=true
