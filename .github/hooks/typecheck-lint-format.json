@@ -3,15 +3,15 @@
     "PostToolUse": [
       {
         "type": "command",
-        "command": "bun run typecheck"
+        "command": "npm run typecheck"
       },
       {
         "type": "command",
-        "command": "bun run lint"
+        "command": "npm run lint"
       },
       {
         "type": "command",
-        "command": "bun run format"
+        "command": "npm run format"
       }
     ]
   }
