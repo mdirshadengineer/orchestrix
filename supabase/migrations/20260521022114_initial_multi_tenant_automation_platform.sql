@@ -9,6 +9,7 @@ create type public.role_scope as enum ('system', 'account');
 create type public.service_status as enum ('active', 'inactive', 'degraded', 'archived');
 create type public.workflow_status as enum ('draft', 'published', 'archived');
 create type public.run_status as enum ('queued', 'running', 'succeeded', 'failed', 'cancelled', 'timed_out');
+create type public.backoff_strategy as enum ('exponential', 'linear', 'constant');
 
 create or replace function public.set_updated_at()
 returns trigger
@@ -204,6 +205,8 @@ create table public.service_secrets (
   unique (service_id, key_name)
 );
 
+comment on column public.service_secrets.secret_ref is 'Reference to secret manager entry (for example Supabase Vault key path). Never store plaintext secrets.';
+
 create index service_secrets_account_id_idx on public.service_secrets (account_id);
 create index service_secrets_service_id_idx on public.service_secrets (service_id);
 
@@ -358,14 +361,14 @@ create table public.retry_policies (
   account_id uuid not null references public.accounts(id) on delete cascade,
   workflow_id uuid references public.workflows(id) on delete cascade,
   max_attempts integer not null check (max_attempts > 0),
-  backoff_strategy text not null default 'exponential',
+  backoff_strategy public.backoff_strategy not null default 'exponential',
   backoff_seconds integer not null default 30 check (backoff_seconds > 0),
   timeout_seconds integer check (timeout_seconds > 0),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
-comment on column public.retry_policies.backoff_strategy is 'Retry backoff strategy. Supported values are application-defined (for example: exponential, linear, constant).';
+comment on column public.retry_policies.backoff_strategy is 'Retry backoff strategy.';
 
 create index retry_policies_account_id_idx on public.retry_policies (account_id);
 create index retry_policies_workflow_id_idx on public.retry_policies (workflow_id);
@@ -571,6 +574,8 @@ create table public.api_keys (
   created_at timestamptz not null default now(),
   revoked_at timestamptz
 );
+
+comment on column public.api_keys.key_hash is 'Store only a salted one-way hash generated in the application layer (for example Argon2id or bcrypt).';
 
 create index api_keys_account_id_idx on public.api_keys (account_id);
 
