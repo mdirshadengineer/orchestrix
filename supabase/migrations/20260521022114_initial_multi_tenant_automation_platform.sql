@@ -212,7 +212,7 @@ create table public.service_health_checks (
   account_id uuid not null references public.accounts(id) on delete cascade,
   service_id uuid not null references public.services(id) on delete cascade,
   check_type text not null,
-  interval_seconds integer not null check (interval_seconds > 0),
+  health_check_interval_seconds integer not null check (health_check_interval_seconds > 0),
   last_status text,
   last_checked_at timestamptz,
   metadata jsonb not null default '{}'::jsonb,
@@ -364,6 +364,8 @@ create table public.retry_policies (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+comment on column public.retry_policies.backoff_strategy is 'Retry backoff strategy. Supported values are application-defined (for example: exponential, linear, constant).';
 
 create index retry_policies_account_id_idx on public.retry_policies (account_id);
 create index retry_policies_workflow_id_idx on public.retry_policies (workflow_id);
