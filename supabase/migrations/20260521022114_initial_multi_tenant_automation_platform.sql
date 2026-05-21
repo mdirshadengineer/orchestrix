@@ -205,7 +205,7 @@ create table public.service_secrets (
   unique (service_id, key_name)
 );
 
-comment on column public.service_secrets.secret_ref is 'Reference to secret manager entry (for example Supabase Vault key path). Never store plaintext secrets.';
+comment on column public.service_secrets.secret_ref is 'Reference to secret manager entry (e.g., a Supabase Vault key path). Never store plaintext secrets.';
 
 create index service_secrets_account_id_idx on public.service_secrets (account_id);
 create index service_secrets_service_id_idx on public.service_secrets (service_id);
@@ -575,7 +575,7 @@ create table public.api_keys (
   revoked_at timestamptz
 );
 
-comment on column public.api_keys.key_hash is 'Store only a salted one-way hash generated in the application layer (for example Argon2id or bcrypt).';
+comment on column public.api_keys.key_hash is 'Store only a salted one-way hash generated in the application layer (e.g., Argon2id or bcrypt).';
 
 create index api_keys_account_id_idx on public.api_keys (account_id);
 
