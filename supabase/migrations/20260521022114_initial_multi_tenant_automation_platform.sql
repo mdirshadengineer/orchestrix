@@ -10,6 +10,7 @@ create type public.service_status as enum ('active', 'inactive', 'degraded', 'ar
 create type public.workflow_status as enum ('draft', 'published', 'archived');
 create type public.run_status as enum ('queued', 'running', 'succeeded', 'failed', 'cancelled', 'timed_out');
 create type public.backoff_strategy as enum ('exponential', 'linear', 'constant');
+comment on type public.backoff_strategy is 'exponential = base * 2^(attempt-1), linear = base * attempt, constant = base.';
 
 create or replace function public.set_updated_at()
 returns trigger
@@ -360,15 +361,15 @@ create table public.retry_policies (
   id uuid primary key default gen_random_uuid(),
   account_id uuid not null references public.accounts(id) on delete cascade,
   workflow_id uuid references public.workflows(id) on delete cascade,
-  max_attempts integer not null check (max_attempts > 0),
+  max_attempts integer not null check (max_attempts > 0 and max_attempts <= 10),
   backoff_strategy public.backoff_strategy not null default 'exponential',
-  backoff_seconds integer not null default 30 check (backoff_seconds > 0),
+  backoff_seconds integer not null default 30 check (backoff_seconds > 0 and backoff_seconds <= 3600),
   timeout_seconds integer check (timeout_seconds > 0),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
-comment on column public.retry_policies.backoff_strategy is 'Retry backoff strategy.';
+comment on column public.retry_policies.backoff_strategy is 'Retry strategy: exponential (base*2^(attempt-1)), linear (base*attempt), constant (base). Base is backoff_seconds.';
 
 create index retry_policies_account_id_idx on public.retry_policies (account_id);
 create index retry_policies_workflow_id_idx on public.retry_policies (workflow_id);
