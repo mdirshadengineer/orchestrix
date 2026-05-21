@@ -357,9 +357,9 @@ create table public.retry_policies (
   id uuid primary key default gen_random_uuid(),
   account_id uuid not null references public.accounts(id) on delete cascade,
   workflow_id uuid references public.workflows(id) on delete cascade,
-  max_attempts integer not null check (max_attempts >= 0),
+  max_attempts integer not null check (max_attempts > 0),
   backoff_strategy text not null default 'exponential',
-  backoff_seconds integer not null default 30 check (backoff_seconds >= 0),
+  backoff_seconds integer not null default 30 check (backoff_seconds > 0),
   timeout_seconds integer check (timeout_seconds > 0),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
