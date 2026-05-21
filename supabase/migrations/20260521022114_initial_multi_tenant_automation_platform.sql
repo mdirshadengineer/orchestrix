@@ -370,6 +370,8 @@ create table public.retry_policies (
 );
 
 comment on column public.retry_policies.backoff_strategy is 'Retry strategy: exponential (base*2^(attempt-1)), linear (base*attempt), constant (base). Base is backoff_seconds.';
+comment on column public.retry_policies.max_attempts is 'Maximum retry attempts per run. Capped at 10 to prevent runaway retries.';
+comment on column public.retry_policies.backoff_seconds is 'Base delay in seconds for retry strategy. Capped at 3600 seconds (1 hour).';
 
 create index retry_policies_account_id_idx on public.retry_policies (account_id);
 create index retry_policies_workflow_id_idx on public.retry_policies (workflow_id);
