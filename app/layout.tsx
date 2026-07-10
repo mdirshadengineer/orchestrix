@@ -1,8 +1,10 @@
 import { Geist, Geist_Mono, Noto_Sans } from "next/font/google"
 
+import { ThemeProvider } from "@wrksz/themes/next"
+
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { ThemeHotkey } from "@/components/theme-hotkey"
+import { cn } from "@/lib/utils"
 
 const notoSans = Noto_Sans({subsets:['latin'],variable:'--font-sans'})
 
@@ -23,7 +25,17 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", notoSans.variable)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          storage="cookie"
+          storageKey="orchestrix-theme"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ThemeHotkey />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

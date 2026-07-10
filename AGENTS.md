@@ -6,3 +6,9 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # Package manager
 Using Bun for package management only install packages with exact version.
+
+# Project Conventions
+
+- Framework: Next.js 16
+- Request interception lives in `proxy.ts`
+- Do not create `middleware.ts`

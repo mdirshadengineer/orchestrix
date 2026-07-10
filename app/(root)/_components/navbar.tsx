@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import * as React from "react"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -97,9 +98,9 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
       logoHref = "#",
       navigationLinks = defaultNavigationLinks,
       signInText = "Sign In",
-      signInHref = "#signin",
+      signInHref = "/auth/login",
       ctaText = "Get Started",
-      ctaHref = "#get-started",
+      ctaHref = "/auth/sign-up",
       onSignInClick,
       onCtaClick,
       ...props
@@ -228,29 +229,15 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
           {/* Right side */}
           <div className="flex items-center gap-3">
             <Button
+              asChild
               className="text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-              onClick={e => {
-                e.preventDefault()
-                if (onSignInClick) {
-                  onSignInClick()
-                }
-              }}
               size="sm"
               variant="ghost"
             >
-              {signInText}
+              <Link href={signInHref}>{signInText}</Link>
             </Button>
-            <Button
-              className="text-sm font-medium px-4 h-9 rounded-md shadow-sm"
-              onClick={e => {
-                e.preventDefault()
-                if (onCtaClick) {
-                  onCtaClick()
-                }
-              }}
-              size="sm"
-            >
-              {ctaText}
+            <Button asChild className="text-sm font-medium px-4 h-9 rounded-md shadow-sm" size="sm">
+              <Link href={ctaHref}>{ctaText}</Link>
             </Button>
           </div>
         </div>
