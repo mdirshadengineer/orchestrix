@@ -5,8 +5,10 @@ import { ThemeProvider } from "@wrksz/themes/next"
 import "./globals.css"
 import { ThemeHotkey } from "@/components/theme-hotkey"
 import { cn } from "@/lib/utils"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { Toaster } from "@/components/ui/sonner"
 
-const notoSans = Noto_Sans({subsets:['latin'],variable:'--font-sans'})
+const notoSans = Noto_Sans({ subsets: ['latin'], variable: '--font-sans' })
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
@@ -33,8 +35,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ThemeHotkey />
-          {children}
+          <TooltipProvider>
+            <ThemeHotkey />
+            <Toaster />
+            {children}
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
