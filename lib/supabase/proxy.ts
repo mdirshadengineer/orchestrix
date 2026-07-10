@@ -1,5 +1,5 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { createServerClient } from "@supabase/ssr"
+import { NextResponse, type NextRequest } from "next/server"
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -17,7 +17,9 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          )
           supabaseResponse = NextResponse.next({
             request,
           })
@@ -39,20 +41,18 @@ export async function updateSession(request: NextRequest) {
   const user = data?.claims
   const pathname = request.nextUrl.pathname
 
-  const isPublicRoute =
-    pathname === '/' ||
-    pathname.startsWith('/auth')
+  const isPublicRoute = pathname === "/" || pathname.startsWith("/auth")
 
   if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone()
-    url.pathname = '/auth/login'
+    url.pathname = "/auth/login"
     return NextResponse.redirect(url)
   }
 
-  const authEntryPaths = ['/auth/login', '/auth/sign-up']
+  const authEntryPaths = ["/auth/login", "/auth/sign-up"]
   if (user && authEntryPaths.includes(pathname)) {
     const url = request.nextUrl.clone()
-    url.pathname = '/protected'
+    url.pathname = "/protected"
     return NextResponse.redirect(url)
   }
 

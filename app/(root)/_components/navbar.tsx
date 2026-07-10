@@ -9,7 +9,11 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 
 // Simple logo component for the navbar
@@ -26,13 +30,22 @@ const Logo = (props: React.SVGAttributes<SVGElement>) => {
       {...(props as any)}
     >
       <rect fill="currentColor" height="323" rx="161.5" width="323" x="0.5" />
-      <circle cx="162" cy="161.5" fill="white" r="60" className="dark:fill-black" />
+      <circle
+        cx="162"
+        cy="161.5"
+        fill="white"
+        r="60"
+        className="dark:fill-black"
+      />
     </svg>
   )
 }
 
 // Hamburger icon component
-const HamburgerIcon = ({ className, ...props }: React.SVGAttributes<SVGElement>) => (
+const HamburgerIcon = ({
+  className,
+  ...props
+}: React.SVGAttributes<SVGElement>) => (
   <svg
     aria-label="Menu"
     className={cn("pointer-events-none", className)}
@@ -105,7 +118,7 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
       onCtaClick,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isMobile, setIsMobile] = useState(false)
     const containerRef = useRef<HTMLElement>(null)
@@ -140,14 +153,14 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
           ref.current = node
         }
       },
-      [ref],
+      [ref]
     )
 
     return (
       <header
         className={cn(
-          "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 [&_*]:no-underline",
-          className,
+          "sticky top-0 z-50 w-full border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-6 [&_*]:no-underline",
+          className
         )}
         ref={combinedRef}
         {...(props as any)}
@@ -175,12 +188,12 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                           <button
                             type="button"
                             className={cn(
-                              "flex w-full items-center rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer no-underline",
+                              "flex w-full cursor-pointer items-center rounded-md px-3 py-2 text-sm font-medium no-underline transition-colors hover:bg-accent hover:text-accent-foreground",
                               link.active
                                 ? "bg-accent text-accent-foreground"
-                                : "text-foreground/80",
+                                : "text-foreground/80"
                             )}
-                            onClick={e => e.preventDefault()}
+                            onClick={(e) => e.preventDefault()}
                           >
                             {link.label}
                           </button>
@@ -195,11 +208,13 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
             <div className="flex items-center gap-6">
               <button
                 type="button"
-                className="flex items-center space-x-2 text-primary hover:text-primary/90 transition-colors cursor-pointer"
-                onClick={e => e.preventDefault()}
+                className="flex cursor-pointer items-center space-x-2 text-primary transition-colors hover:text-primary/90"
+                onClick={(e) => e.preventDefault()}
               >
                 <div className="text-2xl">{logo}</div>
-                <span className="hidden font-bold text-xl sm:inline-block">shadcn.io</span>
+                <span className="hidden text-xl font-bold sm:inline-block">
+                  shadcn.io
+                </span>
               </button>
               {/* Navigation menu */}
               {!isMobile && (
@@ -210,12 +225,12 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                         <button
                           type="button"
                           className={cn(
-                            "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer no-underline",
+                            "group inline-flex h-9 w-max cursor-pointer items-center justify-center rounded-md px-4 py-2 text-sm font-medium no-underline transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
                             link.active
                               ? "bg-accent text-accent-foreground"
-                              : "text-foreground/80 hover:text-foreground",
+                              : "text-foreground/80 hover:text-foreground"
                           )}
-                          onClick={e => e.preventDefault()}
+                          onClick={(e) => e.preventDefault()}
                         >
                           {link.label}
                         </button>
@@ -236,14 +251,18 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
             >
               <Link href={signInHref}>{signInText}</Link>
             </Button>
-            <Button asChild className="text-sm font-medium px-4 h-9 rounded-md shadow-sm" size="sm">
+            <Button
+              asChild
+              className="h-9 rounded-md px-4 text-sm font-medium shadow-sm"
+              size="sm"
+            >
               <Link href={ctaHref}>{ctaText}</Link>
             </Button>
           </div>
         </div>
       </header>
     )
-  },
+  }
 )
 
 Navbar.displayName = "Navbar"
